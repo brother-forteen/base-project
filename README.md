@@ -128,6 +128,7 @@ V1.0.0
 ```
 
 ## 注意问题
+- 在webpack配置了自定义路径之后，webstrom编辑器不认识这个变量，会给错误提示。在File > Settings > Languages & Frameworks > webpack 中加入alias.config.js配置
 
 ## 遇见问题及解决方案
 

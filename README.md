@@ -28,7 +28,7 @@ V1.0.0
 - 开发者如何启动项目
    + 环境:  nodejs > 10.0
    + 启动
-      + 克隆代码到本地 git clone <a href="https://github.com/brother-forteen/base-project.git">
+      + 克隆代码到本地 git clone <a href="https://github.com/brother-forteen/base-project.git">https://github.com/brother-forteen/base-project.git</a>
       + 安装依赖 npm install
       + 启动本地服务 npm run dev
       

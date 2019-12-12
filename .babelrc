@@ -1,0 +1,23 @@
+{
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime"
+    ],
+    [
+      "@vue/babel-plugin-transform-vue-jsx"
+    ]
+  ],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": false,
+        "targets": {
+          "browsers": ["> 1%", "last 2 versions", "not ie <= 8"],
+          "node":"8.9.0"
+        },
+        "useBuiltIns": "usage"
+      }
+    ]
+  ]
+}

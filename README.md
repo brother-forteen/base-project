@@ -1,9 +1,8 @@
 ## 项目信息
 ### 1. 项目名称
-<p><a href="">项目名称</a></p>
+<p align="center"><a href="">项目名称</a></p>
 
 ### 2.项目简介
-基于webpack4.0的vue项目基础框架
 
 ### 3. 版本
 V1.0.0
@@ -28,7 +27,7 @@ V1.0.0
 - 开发者如何启动项目
    + 环境:  nodejs > 10.0
    + 启动
-      + 克隆代码到本地 git clone <a href="https://github.com/brother-forteen/base-project.git">https://github.com/brother-forteen/base-project.git</a>
+      + 克隆代码到本地 git clone http://xxxx.xxx.xx:0000
       + 安装依赖 npm install
       + 启动本地服务 npm run dev
       
@@ -132,9 +131,6 @@ V1.0.0
 - 在webpack配置了自定义路径之后，webstrom编辑器不认识这个变量，会给错误提示。在File > Settings > Languages & Frameworks > webpack 中加入alias.config.js配置
 
 ## 遇见问题及解决方案
-
-## 接下来要做
-- 打包配置: 根据打包命令输入的url配置接口请求的BASE_URL地址
 
 
 

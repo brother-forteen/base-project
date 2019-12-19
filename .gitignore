@@ -5,8 +5,6 @@ dist/web/*
 dist/static
 static/dll
 .electron-vue/static
-build/*
-!build/icons
 node_modules/
 npm-debug.log
 npm-debug.log.*
@@ -27,6 +25,3 @@ v8-compile-cache-0
 .jsbeautifyrc
 
 *.bak
-
-# package-lock file
-package-lock.json

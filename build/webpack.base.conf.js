@@ -19,20 +19,22 @@ function resolve (dir) {
 
 module.exports = {
     context: path.resolve(__dirname, '../'),
-    entry: './src/main.js',
+    entry: resolve('src/main.js'),
     output: {
         path: config.build.assetsRoot,
-        filename: '[name].[hash].js',
+        filename: 'js/[name].[hash].js',
+        chunkFilename:'js/[name].[hash:8].js',
         publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublic : config.dev.assetsPublic
     },
     resolve: {
-        extensions: ['.js', '.vue', '.json', '.css', '.scss'],
+        extensions: ['.js', '.scss', '.css', '.vue', '.json'],
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
             '@': resolve('src')
         }
     },
     module: {
+        noParse: /jquery/,
         rules: [
             {
                 test: /\.vue$/,
@@ -53,7 +55,24 @@ module.exports = {
                     resolve('node_modules/webpack-dev-server/client')
                 ]
             },
-
+            {
+                test: /\.css$/,
+                use: ['vue-style-loader', 'css-loader', {
+                    loader: 'postcss-loader',
+                    options: {
+                        plugins: [require('autoprefixer')]
+                    }
+                }]
+            },
+            {
+                test: /\.scss$/,
+                use: ['vue-style-loader', 'css-loader', {
+                    loader: 'postcss-loader',
+                    options: {
+                        plugins: [require('autoprefixer')]
+                    }
+                }, 'sass-loader']
+            },
             {
                 test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
                 loader: 'url-loader',

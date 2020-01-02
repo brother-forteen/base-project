@@ -14,15 +14,30 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HappyPack = require('happyPack');
+const os = require('os');
+const happyThreadPool = HappyPack.ThreadPool({
+    size: os.cpus().length
+})
+const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 
 const webpackConfig = merge(baseWebpackConfig, {
     mode: 'production',
     module: {
-        rules: utils.styleLoaders({
-            sourceMap: config.build.productionSourceMap,
-            extract: true,
-            usePostCSS: true
-        })
+        // rules: utils.styleLoaders({
+        //     sourceMap: config.build.productionSourceMap,
+        //     extract: true,
+        //     usePostCSS: true
+        // })
+        rules: [
+            {
+                test: /\.js$/,
+                use: [{
+                    loader: 'happypack/loader?id=happyBabel'
+                }],
+                exclude: /node_modules/
+            }
+        ]
     },
     devtool: config.build.productionSourceMap ? config.build.devtool : false,
     output: {
@@ -48,14 +63,29 @@ const webpackConfig = merge(baseWebpackConfig, {
             }
         },
         minimizer: [
-            new UglifyJsPlugin({
-                sourceMap: config.build.productionSourceMap,
-                uglifyOptions: {
-                    warnings: false,
-                    drop_console: true,
-                    pure_funcs: ['console.log']
-                },
-                parallel: true
+            // new UglifyJsPlugin({
+            //     sourceMap: config.build.productionSourceMap,
+            //     uglifyOptions: {
+            //         warnings: false,
+            //         drop_console: true,
+            //         pure_funcs: ['console.log']
+            //     },
+            //     parallel: true
+            // })
+
+            new ParallelUglifyPlugin({
+                cacheDir: '.cache/',
+                uglifyJs: {
+                    output: {
+                        comments: false,
+                        beautify: false
+                    },
+                    compress: {
+                        drop_console: true,
+                        collapse_vars: true,
+                        reduce_vars: true
+                    }
+                }
             })
         ]
     },
@@ -68,8 +98,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         new MiniCssExtractPlugin({
             // Options similar to the same options in webpackOptions.output
             // both options are optional
-            filename: utils.assetsPath('css/[name].css'),
-            chunkFilename: utils.assetsPath('css/[id].css')
+            filename: utils.assetsPath('css/[name][hash].css'),
+            chunkFilename: utils.assetsPath('css/[id][hash].css')
         }),
 
         // Compress extracted CSS. We are using this plugin so that possible
@@ -98,7 +128,22 @@ const webpackConfig = merge(baseWebpackConfig, {
                 to: config.build.assetsSubDirectory,
                 ignore: ['.*']
             }
-        ])
+        ]),
+
+        new HappyPack({
+            id: 'happyBabel',  // 与loader对应的id标识
+            // 用法和loader的配置一样，注意这里是loaders
+            loaders: [{
+                loader: 'babel-loader',
+                options: {
+                    presets: [
+                        ['@babel/preset-env']
+                    ],
+                    cacheDirectory: true
+                }
+            }],
+            threadPool: happyThreadPool // 共享进程池
+        })
     ]
 });
 

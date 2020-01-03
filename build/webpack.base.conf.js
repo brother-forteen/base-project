@@ -12,6 +12,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const vueLoaderConfig = require('./vue-loader.conf');
 const { VueLoaderPlugin } = require('vue-loader');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
@@ -23,14 +26,20 @@ module.exports = {
     output: {
         path: config.build.assetsRoot,
         filename: 'js/[name].[hash].js',
-        chunkFilename:'js/[name].[hash:8].js',
+        chunkFilename:'js/[chunkhash].bundle.js',
         publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublic : config.dev.assetsPublic
     },
     resolve: {
         extensions: ['.js', '.scss', '.css', '.vue', '.json'],
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
-            '@': resolve('src')
+            '@': resolve('src'),
+            '@static': resolve('static'),
+            '@api': resolve('src/api'),
+            '@image': resolve('src/assets/image'),
+            '@css': resolve('src/assets/css'),
+            '@components': resolve('src/components'),
+            '@router': resolve('src/router')
         }
     },
     module: {
@@ -43,7 +52,9 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                use: {
+                use:
+
+                    {
                     loader: 'babel-loader?cacheDirectory=true',
                     options: {
                         presets: ['@babel/preset-env']
@@ -57,21 +68,42 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['vue-style-loader', 'css-loader', {
-                    loader: 'postcss-loader',
-                    options: {
-                        plugins: [require('autoprefixer')]
-                    }
-                }]
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'vue-style-loader',
+                        'css-loader',
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                plugins: [
+                                    require('autoprefixer')
+                                ]
+                            }
+                        }
+                    ]
+                })
             },
             {
                 test: /\.scss$/,
-                use: ['vue-style-loader', 'css-loader', {
-                    loader: 'postcss-loader',
-                    options: {
-                        plugins: [require('autoprefixer')]
-                    }
-                }, 'sass-loader']
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'vue-style-loader',
+                        'css-loader',
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                plugins: [
+                                    require('autoprefixer')
+                                ]
+                            }
+                        },
+                        'sass-loader'
+                    ]
+                })
             },
             {
                 test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
@@ -112,7 +144,8 @@ module.exports = {
             minify: {
                 removeComments: true,
                 collapseWhitespace: true,
-                removeAttributeQuotes: true
+                removeAttributeQuotes: true,
+                minifyJS: true,   // 压缩js
                 // more options:
                 // https://github.com/kangax/html-minifier#options-quick-reference
             },
@@ -129,7 +162,11 @@ module.exports = {
             }
         ]),
 
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+
+        new  MiniCssExtractPlugin({
+            filename: './css/main[hash].css'
+        }),
     ],
     node: {
         // prevent webpack from injecting useless setImmediate polyfill because Vue

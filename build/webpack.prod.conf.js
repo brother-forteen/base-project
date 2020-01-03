@@ -18,18 +18,18 @@ const HappyPack = require('happyPack');
 const os = require('os');
 const happyThreadPool = HappyPack.ThreadPool({
     size: os.cpus().length
-})
+});
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 
 const webpackConfig = merge(baseWebpackConfig, {
     mode: 'production',
     module: {
-        // rules: utils.styleLoaders({
-        //     sourceMap: config.build.productionSourceMap,
-        //     extract: true,
-        //     usePostCSS: true
-        // })
         rules: [
+            // ...(utils.styleLoaders({
+            //     sourceMap: config.build.productionSourceMap,
+            //     extract: true,
+            //     usePostCSS: true
+            // })),
             {
                 test: /\.js$/,
                 use: [{
@@ -91,10 +91,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     },
 
     plugins: [
-        // new webpack.DefinePlugin({
-        //     'process.env.NODE_ENV': JSON.stringify('production')
-        // }),
-
         new MiniCssExtractPlugin({
             // Options similar to the same options in webpackOptions.output
             // both options are optional

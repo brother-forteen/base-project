@@ -1,1 +1,0 @@
-{"source":"(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{s9eP:function(e,n,t){\"use strict\";t.r(n);var a={name:\"Home\"},o=t(\"KHd+\"),s=Object(o.a)(a,function(){var e=this,n=e.$createElement;return(e._self._c||n)(\"div\",{attrs:{id:\"home\"}},[e._v(\"\\n    i am home\\n\")])},[],!1,null,null,null);n.default=s.exports}}]);"}

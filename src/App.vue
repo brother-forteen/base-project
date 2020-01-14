@@ -16,18 +16,11 @@
         name: "App",
         data(){
             return {
-                template: {
-                    inputParam: []
-                }
+
             }
         },
         methods: {
-            test(){
-                this.template.inputParam({
-                    xxx: 'xxx',
-                    'dsfaf': 'ssdf'
-                })
-            }
+
         }
     }
 </script>

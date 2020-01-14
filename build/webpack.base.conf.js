@@ -12,9 +12,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const vueLoaderConfig = require('./vue-loader.conf');
 const { VueLoaderPlugin } = require('vue-loader');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
@@ -65,45 +62,6 @@ module.exports = {
                     resolve('test'),
                     resolve('node_modules/webpack-dev-server/client')
                 ]
-            },
-            {
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        MiniCssExtractPlugin.loader,
-                        'vue-style-loader',
-                        'css-loader',
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: [
-                                    require('autoprefixer')
-                                ]
-                            }
-                        }
-                    ]
-                })
-            },
-            {
-                test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        MiniCssExtractPlugin.loader,
-                        'vue-style-loader',
-                        'css-loader',
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: [
-                                    require('autoprefixer')
-                                ]
-                            }
-                        },
-                        'sass-loader'
-                    ]
-                })
             },
             {
                 test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
@@ -162,11 +120,7 @@ module.exports = {
             }
         ]),
 
-        new VueLoaderPlugin(),
-
-        new  MiniCssExtractPlugin({
-            filename: './css/main[hash].css'
-        }),
+        new VueLoaderPlugin()
     ],
     node: {
         // prevent webpack from injecting useless setImmediate polyfill because Vue

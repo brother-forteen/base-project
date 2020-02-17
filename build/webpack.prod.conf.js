@@ -71,7 +71,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             //         pure_funcs: ['console.log']
             //     },
             //     parallel: true
-            // })
+            // }),
 
             new ParallelUglifyPlugin({
                 cacheDir: '.cache/',
